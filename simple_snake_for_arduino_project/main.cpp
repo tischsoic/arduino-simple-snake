@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <bitset>
 
 const int screen_dimension = 8;
 const int snake_length = 4;
@@ -20,14 +21,29 @@ void manage_snake_animation(
 int** create_screen(int screen_size);
 void delete_screen(int** screen, int screen_size);
 
+typedef std::bitset<8> byte;
 
+byte screen_row_to_byte(byte *row, int screen_size)
+{
+	byte row_as_byte = 0;
+
+	for (int i = 0; i < screen_size; ++i)
+	{
+		if (row[i] == 1) {
+			// TODO
+			row_as_byte = 0;
+		}
+	}
+
+	return row_as_byte;
+}
 
 int main() 
 {
 	int** screen = create_screen(screen_dimension);
 	clearImage(screen, screen_dimension);
 	
-	manage_snake_animation(screen, screen_dimension, 3, 10);
+	manage_snake_animation(screen, screen_dimension, 3, 4);
 
 	int a;
 	std::cin >> a;
@@ -76,10 +92,10 @@ void manage_snake_animation(
 
 	animation_phase phase = FORWARD;
 
-	for (int time = 1; time <= 5; ++time) {
+	for (int time = 1; time <= 10; ++time) {
 		if (time % snake_growth_step_delay == 0
 			&& snake_head_position > 0 
-			&& screen_resolution < screen_resolution) {
+			&& snake_head_position < screen_resolution) {
 			++snake_length;
 		}
 

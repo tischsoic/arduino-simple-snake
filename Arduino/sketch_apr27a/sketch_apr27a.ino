@@ -6,7 +6,18 @@
 
 LedControl lc=LedControl(12,11,10,2);  // Pins: DIN,CLK,CS, # of Display connected
 
-unsigned long delayTime=500;  // Delay between Frames
+unsigned long delayTime=100;  // Delay between Frames
+
+byte my_pow(byte num, byte p)
+{
+  byte result = 1;
+
+  for(int i = 0; i < p; ++i) {
+    result *= num;
+  }
+
+  return result;
+}
 
 byte screen_row_to_byte(byte *row, int screen_size)
 {
@@ -15,7 +26,7 @@ byte screen_row_to_byte(byte *row, int screen_size)
     for(int i = 0; i < screen_size; ++i)
     {
       if (row[i] == 1) {
-        row_as_byte += (byte)pow(2, i);
+        row_as_byte += my_pow(2, i);
       }
     }
 
@@ -69,7 +80,7 @@ void setup()
   byte** screen = create_screen(screen_dimension);
   clearImage(screen, screen_dimension);
   
-  manage_snake_animation(screen, screen_dimension, 3, 10);
+  manage_snake_animation(screen, screen_dimension, 3, 5);
 
   delete_screen(screen, screen_dimension);
 }
@@ -112,10 +123,10 @@ void manage_snake_animation(
 
   animation_phase phase = FORWARD;
 
-  for (int time = 1; time <= 60; ++time) {
+  for (int time = 1; time <= 130; ++time) {
     if (time % snake_growth_step_delay == 0
       && snake_head_position > 0 
-      && screen_resolution < screen_resolution) {
+      && snake_head_position < screen_resolution) {
       ++snake_length;
     }
 
