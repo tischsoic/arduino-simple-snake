@@ -1,11 +1,21 @@
 #include <iostream>
+#include <string>
 
 const int screen_dimension = 8;
 const int snake_length = 4;
 
-void generateImage(int** square_screen, int screen_dimension);
+void generate_image(
+	int** square_screen,
+	int screen_dimension,
+	int snake_shift,
+	int snake_length);
 void clearImage(int** square_screen, int screen_dimension);
 void printScreen(int** square_screen, int screen_dimension);
+void manage_snake_animation(
+	int** screen,
+	int screen_size,
+	int snake_start_length,
+	int snake_growth_step_delay);
 
 int** create_screen(int screen_size);
 void delete_screen(int** screen, int screen_size);
@@ -13,15 +23,76 @@ void delete_screen(int** screen, int screen_size);
 int main() 
 {
 	int** screen = create_screen(screen_dimension);
-
 	clearImage(screen, screen_dimension);
-	generateImage(screen, screen_dimension);
-	printScreen(screen, screen_dimension);
+	
+	manage_snake_animation(screen, screen_dimension, 3, 10);
 
 	int a;
 	std::cin >> a;
 
 	delete_screen(screen, screen_dimension);
+}
+
+enum animation_phase {
+	FORWARD, BACKWARD
+};
+
+void change_animation_phase(animation_phase &phase)
+{
+	switch (phase) {
+	case FORWARD:
+		phase = BACKWARD;
+		return;
+	case BACKWARD:
+		phase = FORWARD;
+	}
+}
+
+void change_snake_shift(int &shift, animation_phase phase)
+{
+	switch (phase) {
+	case FORWARD:
+		++shift;
+		return;
+	case BACKWARD:
+		--shift;
+	}
+}
+
+void manage_snake_animation(
+	int** screen, 
+	int screen_size, 
+	int snake_start_length, 
+	int snake_growth_step_delay)
+{
+	int snake_head_position = 0;
+
+	int screen_resolution = pow(screen_size, 2);
+
+	int snake_shift = -3;
+	int snake_length = snake_start_length;
+
+	animation_phase phase = FORWARD;
+
+	for (int time = 1; time <= 60; ++time) {
+		if (time % snake_growth_step_delay == 0
+			&& snake_head_position > 0 
+			&& screen_resolution < screen_resolution) {
+			++snake_length;
+		}
+
+		change_snake_shift(snake_shift, phase);
+		change_snake_shift(snake_head_position, phase);
+
+		generate_image(screen, screen_size, snake_shift, snake_length);
+		printScreen(screen, screen_size);
+		std::cout << "\n";
+
+		if (time % screen_resolution == 0) {
+			change_animation_phase(phase);
+			snake_length = snake_start_length;
+		}
+	}
 }
 
 enum screen_side {
@@ -125,13 +196,14 @@ void overflow_below_zero_subtraction(int &from, int &value)
 	value = overflow;
 }
 
-void generateImage(int** square_screen, int screen_dimension)
+void generate_image(
+	int** square_screen, 
+	int screen_dimension, 
+	int snake_shift, 
+	int snake_length)
 {
-	int snake_shift = 52;
-	int snake_length = 10;
-
-	int snake_to_draw = snake_length;
-	int shift_to_draw = snake_shift;
+	int snake_to_draw = snake_shift < 0 ? snake_length + snake_shift : snake_length;
+	int shift_to_draw = snake_shift < 0 ? 0 : snake_shift;
 
 	int drawn = 0;
 
@@ -181,9 +253,11 @@ void clearImage(int** square_screen, int screen_dimension)
 
 void printScreen(int** square_screen, int screen_dimension)
 {
+	std::string separator = " ";
+
 	for (int i = 0; i < screen_dimension; ++i) {
 		for (int j = 0; j < screen_dimension; ++j) {
-			std::cout << square_screen[i][j] << (j != screen_dimension - 1 ? ", " : "");
+			std::cout << square_screen[i][j] << (j != screen_dimension - 1 ? separator : "");
 		}
 		std::cout << std::endl;
 	}
