@@ -20,6 +20,8 @@ void manage_snake_animation(
 int** create_screen(int screen_size);
 void delete_screen(int** screen, int screen_size);
 
+
+
 int main() 
 {
 	int** screen = create_screen(screen_dimension);
@@ -74,7 +76,7 @@ void manage_snake_animation(
 
 	animation_phase phase = FORWARD;
 
-	for (int time = 1; time <= 60; ++time) {
+	for (int time = 1; time <= 5; ++time) {
 		if (time % snake_growth_step_delay == 0
 			&& snake_head_position > 0 
 			&& screen_resolution < screen_resolution) {
