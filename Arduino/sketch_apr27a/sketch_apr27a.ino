@@ -118,16 +118,17 @@ void manage_snake_animation(
 
   int screen_resolution = pow(screen_size, 2);
 
-  int snake_shift = -3;
+  int snake_shift = -snake_start_length;
   int snake_length = snake_start_length;
 
   animation_phase phase = FORWARD;
 
-  for (int time = 1; time <= 130; ++time) {
+  for (int time = 1; time <= 170; ++time) {
     if (time % snake_growth_step_delay == 0
       && snake_head_position > 0 
       && snake_head_position < screen_resolution) {
       ++snake_length;
+      --snake_shift;
     }
 
     change_snake_shift(snake_shift, phase);
@@ -136,9 +137,16 @@ void manage_snake_animation(
     generate_image(screen, screen_size, snake_shift, snake_length);
     printScreen(screen, screen_size);
 
-    if (time % screen_resolution == 0) {
+    //if (snake_shift != 0 && snake_shift % screen_resolution == 0) {
+    if ((phase == FORWARD && snake_shift == screen_resolution)
+        || (phase == BACKWARD && snake_shift == -snake_length)) {
       change_animation_phase(phase);
       snake_length = snake_start_length;
+      if (phase == FORWARD) {
+        snake_shift = -snake_start_length;
+        snake_head_position = 0;
+        time = 0;
+      }
     }
   }
 }
