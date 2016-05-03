@@ -1,5 +1,6 @@
 #include "SquareScreenArduino.h"
 #include "LedControl.h"
+#include "LedControlSettings.h"
 
 //LedControl lc=LedControl(12,11,10,2);  // Pins: DIN,CLK,CS, # of Display connected
 //
@@ -18,10 +19,10 @@ SquareScreenArduino::~SquareScreenArduino()
 
 void SquareScreenArduino::print_screen()
 {
-//  for (int i = 0; i < size; ++i) {
-//    lc.setRow(0,i,screen[i]);
-//  }
-//  delay(delayTime);
+  for (int i = 0; i < size; ++i) {
+    lc.setRow(0,i,screen[i]);
+  }
+  delay(delayTime);
 }
 
 void SquareScreenArduino::clear_screen()
