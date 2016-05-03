@@ -79,13 +79,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="animation.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SnakeAnimation.cpp" />
     <ClCompile Include="SquareScreenStd.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="animation.h" />
     <ClInclude Include="byte.h" />
     <ClInclude Include="SnakeAnimation.h" />
     <ClInclude Include="SquareScreen.h" />

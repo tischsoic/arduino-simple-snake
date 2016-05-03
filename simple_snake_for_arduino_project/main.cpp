@@ -6,7 +6,6 @@
 #include "SquareScreen.h"
 #include "SquareScreenStd.h"
 #include "SnakeAnimation.h"
-#include "animation.h"
 
 const int screen_dimension = 8;
 const int snake_length = 4;
