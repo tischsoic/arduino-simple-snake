@@ -8,6 +8,7 @@ class SquareScreenArduino : public SquareScreen {
 protected:
 	byte* screen;
 
+	class MaxScreenSizeExeeded {};
 public:
 	SquareScreenArduino(byte size);
 

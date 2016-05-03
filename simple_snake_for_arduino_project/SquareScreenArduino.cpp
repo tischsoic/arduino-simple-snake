@@ -6,7 +6,14 @@
 SquareScreenArduino::SquareScreenArduino(byte size)
 	: SquareScreen(size)
 {
-	this->size = size;
+	if (size > 8) {
+		throw MaxScreenSizeExeeded();
+	}
+
+	if (size < 0) {
+		throw OutOfRangeException();
+	}
+
 	screen = new byte[size];
 }
 
