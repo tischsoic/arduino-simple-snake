@@ -81,12 +81,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SnakeAnimation.cpp" />
+    <ClCompile Include="SquareScreenArduino.cpp" />
     <ClCompile Include="SquareScreenStd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte.h" />
     <ClInclude Include="SnakeAnimation.h" />
     <ClInclude Include="SquareScreen.h" />
+    <ClInclude Include="SquareScreenArduino.h" />
     <ClInclude Include="SquareScreenStd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
