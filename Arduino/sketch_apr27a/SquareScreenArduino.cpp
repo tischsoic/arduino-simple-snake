@@ -6,17 +6,26 @@
 //
 //unsigned long delayTime=100;  // Delay between Frames
 
+/**
+ * Constructor
+ */
 SquareScreenArduino::SquareScreenArduino(byte size)
   : SquareScreen(size)
 {
   screen = new byte[size];
 }
 
+/**
+ * Destructor
+ */
 SquareScreenArduino::~SquareScreenArduino()
 {
   delete screen;
 }
 
+/**
+ * Method printing screen on Arduino Led screen
+ */
 void SquareScreenArduino::print_screen()
 {
   for (int i = 0; i < size; ++i) {
@@ -25,6 +34,9 @@ void SquareScreenArduino::print_screen()
   delay(delayTime);
 }
 
+/**
+ * Method clearing screen
+ */
 void SquareScreenArduino::clear_screen()
 {
   for (int i = 0; i < size; ++i) {
@@ -34,12 +46,18 @@ void SquareScreenArduino::clear_screen()
   }
 }
 
+/**
+ * Gets pixel value
+ */
 byte SquareScreenArduino::get_pixel(byte x, byte y)
 {
   byte row = screen[x];
   return (row >> y) & 1;
 }
 
+/**
+ * Sets pixel
+ */
 void SquareScreenArduino::set_pixel(byte x, byte y, byte value)
 {
   

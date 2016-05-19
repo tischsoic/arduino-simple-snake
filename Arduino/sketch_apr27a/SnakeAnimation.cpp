@@ -2,6 +2,12 @@
 #include "SnakeAnimation.h"
 #include "SquareScreen.h"
 
+/**
+ * Constructor of SnakeAnimation class.
+ * \param screen Screen of type SquareScreen to draw to
+ * \param snake_start_length snake start length
+ * \param snake_growth_delay snake growth delay
+ */
 SnakeAnimation::SnakeAnimation(
   SquareScreen *screen,
   byte snake_start_length,
@@ -12,6 +18,10 @@ SnakeAnimation::SnakeAnimation(
   this->snake_growth_step_delay = snake_growth_delay;
 }
 
+/**
+ * Changes animation phase - snake can go
+ * forward or backward
+ */
 void SnakeAnimation::change_animation_phase()
 {
   switch (current_animation_phase) {
@@ -23,6 +33,11 @@ void SnakeAnimation::change_animation_phase()
   }
 }
 
+/**
+ * Changes snake shift based on animation phase.
+ * The greater shift the closer to the center
+ * \param shift shift to be changed
+ */
 void SnakeAnimation::change_snake_shift(int &shift)
 {
   switch (current_animation_phase) {
@@ -34,6 +49,9 @@ void SnakeAnimation::change_snake_shift(int &shift)
   }
 }
 
+/**
+ * Manages whole animation
+ */
 void SnakeAnimation::manage_snake_animation()
 {
   int snake_head_position = 0;
@@ -72,6 +90,13 @@ void SnakeAnimation::manage_snake_animation()
   }
 }
 
+/**
+ * Changes side. Side is used in algorithm drawing snake
+ * on screen. Animation starts from top ang goes through
+ * right and bottom to left. After this cycle we move
+ * one level closer to center and repeat process until
+ * we reach center.
+ */
 void SnakeAnimation::change_side()
 {
   current_screen_side = current_screen_side == LEFT
@@ -79,6 +104,9 @@ void SnakeAnimation::change_side()
     : (screen_side)(current_screen_side + 1);
 }
 
+/**
+ * Returns initial 
+ */
 SnakeAnimation::screen_position SnakeAnimation::get_initial_position(int step)
 {
   screen_position initial_position = { 0, 0 };
@@ -108,6 +136,9 @@ SnakeAnimation::screen_position SnakeAnimation::get_initial_position(int step)
   return initial_position;
 }
 
+/**
+ * Method managing one side of animation on screen
+ */
 int SnakeAnimation::manage_side(int step, int snake_to_draw, int shift_to_draw)
 {
   screen_position current_position = get_initial_position(step);
@@ -149,6 +180,9 @@ int SnakeAnimation::manage_side(int step, int snake_to_draw, int shift_to_draw)
   return i;
 }
 
+/**
+ * Special method for managing "from" and "value" values
+ */
 void SnakeAnimation::overflow_below_zero_subtraction(int &from, int &value)
 {
   int overflow = 0;
@@ -163,6 +197,9 @@ void SnakeAnimation::overflow_below_zero_subtraction(int &from, int &value)
   value = overflow;
 }
 
+/**
+ * Method drawing snake on screen.
+ */
 void SnakeAnimation::generate_image(
   int snake_shift,
   int snake_length)
