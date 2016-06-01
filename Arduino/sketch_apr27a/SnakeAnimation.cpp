@@ -63,12 +63,22 @@ void SnakeAnimation::manage_snake_animation()
 
   current_animation_phase = FORWARD;
 
-  for (int time = 1; time <= 170; ++time) {
+  for (int time = 1; ; ++time) {
     if (time % snake_growth_step_delay == 0
       && snake_head_position > 0
       && snake_head_position < screen_resolution) {
+        // If we head has not already reached end,
+        // we increase snake length and decrease it's
+        // shift because it can only move forward 
+        // by one step at a frame.
       ++snake_length;
-      --snake_shift;
+      if (current_animation_phase == FORWARD) {
+        --snake_shift;
+      } else {
+        //If we go backward
+//        ++snake_shift;
+      }
+      
     }
 
     change_snake_shift(snake_shift);
@@ -80,12 +90,19 @@ void SnakeAnimation::manage_snake_animation()
 
     if ((current_animation_phase == FORWARD && snake_shift == screen_resolution)
       || (current_animation_phase == BACKWARD && snake_shift == -snake_length)) {
-      change_animation_phase();
+      change_animation_phase();     // Snake can go forward or backward
+      
+      // If we change snake's movement direction
+      // we have to reset some params:s
       snake_length = snake_start_length;
       if (current_animation_phase == FORWARD) {
         snake_shift = -snake_start_length;
         snake_head_position = 0;
+        time = 1;
+        screen->fire_all_diods();
       }
+
+      screen->turn_by_180_degrees_right();
     }
   }
 }
@@ -105,7 +122,7 @@ void SnakeAnimation::change_side()
 }
 
 /**
- * Returns initial 
+ * Returns initial position
  */
 SnakeAnimation::screen_position SnakeAnimation::get_initial_position(int step)
 {
@@ -182,6 +199,7 @@ int SnakeAnimation::manage_side(int step, int snake_to_draw, int shift_to_draw)
 
 /**
  * Special method for managing "from" and "value" values
+ * Keeps "from" value above or equal to zero. 
  */
 void SnakeAnimation::overflow_below_zero_subtraction(int &from, int &value)
 {
@@ -204,19 +222,19 @@ void SnakeAnimation::generate_image(
   int snake_shift,
   int snake_length)
 {
-  int snake_to_draw = snake_shift < 0 ? snake_length + snake_shift : snake_length;
-  int shift_to_draw = snake_shift < 0 ? 0 : snake_shift;
+  int snake_to_draw = snake_shift < 0 ? snake_length + snake_shift : snake_length;  // Count of snake elements to draw
+  int shift_to_draw = snake_shift < 0 ? 0 : snake_shift;                            // Count of shift elements to draw
 
-  int drawn = 0;
+  int drawn = 0;      // Number of elements already drawn
 
   current_screen_side = TOP;
 
-  int steps_count = screen->get_size() / 2;
+  int steps_count = screen->get_size() / 2;   // Number of steps in algorithm
 
   screen->clear_screen();
   for (int step = 0; step < steps_count; ++step) {
     if (snake_to_draw == 0) {
-      break;
+      break;    // If we have drawn everything, we leave
     }
 
     //for each side:

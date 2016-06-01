@@ -2,10 +2,6 @@
 #include "LedControl.h"
 #include "LedControlSettings.h"
 
-//LedControl lc=LedControl(12,11,10,2);  // Pins: DIN,CLK,CS, # of Display connected
-//
-//unsigned long delayTime=100;  // Delay between Frames
-
 /**
  * Constructor
  */
@@ -13,6 +9,7 @@ SquareScreenArduino::SquareScreenArduino(byte size)
   : SquareScreen(size)
 {
   screen = new byte[size];
+  clear_screen();
 }
 
 /**
@@ -46,8 +43,19 @@ void SquareScreenArduino::clear_screen()
   }
 }
 
+void SquareScreenArduino::fire_all_diods()
+{
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
+      set_pixel(i, j, 1);
+    }
+  }
+
+  print_screen();
+}
+
 /**
- * Gets pixel value
+ * Gets pixel state
  */
 byte SquareScreenArduino::get_pixel(byte x, byte y)
 {
@@ -60,8 +68,9 @@ byte SquareScreenArduino::get_pixel(byte x, byte y)
  */
 void SquareScreenArduino::set_pixel(byte x, byte y, byte value)
 {
+  prepare_pixel_position(x, y);
+  prepare_pixel_for_arduino_screen(x, y);
   
-
   byte row = screen[x];
   screen[x] ^= (-value ^ row) & (1 << y);
 }

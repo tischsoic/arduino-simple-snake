@@ -47,7 +47,7 @@ void SnakeAnimation::manage_snake_animation()
 
 	current_animation_phase = FORWARD;
 
-	for (int time = 1; time <= 170; ++time) {
+	for (int time = 1; time <= 4; ++time) {
 		if (time % snake_growth_step_delay == 0
 			&& snake_head_position > 0
 			&& snake_head_position < screen_resolution) {
